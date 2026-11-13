@@ -4,3 +4,9 @@
 --class-path example/hello_server/src
 --main Main
 --cpp bin/example/hello_server
+
+--next
+--class-path example/hello_server/src
+--main Main
+--hl bin/example/hello_server/hl/main.c
+--define hlgen.makefile

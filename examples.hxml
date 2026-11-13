@@ -1,0 +1,6 @@
+--library xing
+
+--next
+--class-path example/hello_server/src
+--main Main
+--cpp bin/example/hello_server

@@ -19,7 +19,7 @@ class Main {
 ```
 ## Installation
 To install `Xing` use:
-`haxelib git xing https://github.com/amiataas/xing`.
+`haxelib git xing https://github.com/caspianrz/xing`.
 
 ## Features
 * Routing

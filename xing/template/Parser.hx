@@ -49,7 +49,7 @@ class Parser {
 			advance();
 			return forStatement();
 		}
-		if (match(TDDollar)) {
+		if (match(TDollar)) {
 			advance();
 			return templateStatement();
 		}
@@ -121,7 +121,7 @@ class Parser {
 
 	private inline function templateStatement():TemplateStatement {
 		var innerExpression = expression();
-		consume(TDDollar, "Expected '$$' after template.");
+		consume(TDollar, "Expected '$' after template.");
 
 		return new TemplateStatement(innerExpression);
 	}
@@ -263,6 +263,7 @@ class Parser {
 	}
 
 	private inline function primary():Expression {
+		// TODO: use switch case
 		if (match(Tfalse)) {
 			advance();
 			return new LiteralExpression(false, XBoolean);
@@ -288,13 +289,12 @@ class Parser {
 		if (match(TLPran)) {
 			return postfix_unary_expression(group());
 		}
-
 		if (match(TID)) {
 			var v = postfix_unary_expression(new VariableExpression(advance()));
 			return v;
 		}
 
-		throw new ParserException("Unknown value as primary.");
+		throw new ParserException('Unknown value ${peek()} as primary.');
 	}
 
 	private inline function consume(code:TokenCode, exception:String) {

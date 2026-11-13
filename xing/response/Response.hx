@@ -1,18 +1,18 @@
 package xing.response;
 
 class Response {
-	private var status : Int;
-	private var body : haxe.io.Bytes;
-	private var headers : Map<String,String>;
-	private var cookies : Map<String, String>;
-	private var output : haxe.io.Output;
+	private var status:Int;
+	private var body:haxe.io.Bytes;
+	private var headers:Map<String, String>;
+	private var cookies:Map<String, String>;
+	private var output:haxe.io.Output;
 
 	public static function fromOutput(output:haxe.io.Output):Response {
 		return new Response(output);
 	}
 
 	public static function notFound(output:haxe.io.Output):Void {
-		var res : Response = new Response(output);
+		var res:Response = new Response(output);
 		res.status = 404;
 		res.body = haxe.io.Bytes.ofString("<body><center><h1>404 NotFound</h1></center></body>");
 		res.send();
@@ -34,6 +34,10 @@ class Response {
 		this.body = haxe.io.Bytes.ofString(body);
 	}
 
+	public function setStatus(code:Int):Void {
+		this.status = code;
+	}
+
 	public function setBytes(b:haxe.io.Bytes):Void {
 		this.body = b;
 	}
@@ -47,11 +51,11 @@ class Response {
 
 	function getResponse():haxe.io.Bytes {
 		var headersString = "";
-		for(hKey=>hValue in headers) {
+		for (hKey => hValue in headers) {
 			headersString += '${hKey}: ${hValue}\r\n';
 		}
 
-		var statusCode : String = switch (status) {
+		var statusCode:String = switch (status) {
 			case 100: "Continue";
 			case 101: "Switching Protocols";
 			case 102: "Processing";
@@ -59,7 +63,7 @@ class Response {
 			case 200: "OK";
 			default: "Unknown";
 		}
-		
+
 		return haxe.io.Bytes.ofString('HTTP/1.1 ${status} ${statusCode}\r\n${headersString}\r\n');
 	}
 }

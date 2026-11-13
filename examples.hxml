@@ -10,3 +10,8 @@
 --main Main
 --hl bin/example/hello_server/hl/main.c
 --define hlgen.makefile
+
+--next
+--class-path example/hello_server/src
+--main Main
+--neko bin/example/hello_server/main.n

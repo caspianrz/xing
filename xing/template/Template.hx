@@ -1,5 +1,6 @@
 package xing.template;
 
+import haxe.Exception;
 import haxe.ds.ReadOnlyArray;
 import haxe.exceptions.NotImplementedException;
 import sys.io.File;
@@ -7,11 +8,17 @@ import xing.template.XingIRVirtualMachine;
 
 abstract Template(XingIRVirtualMachine) {
 	function new(template:String, context:Context) {
-		final lexer:Lexer = new Lexer(template);
-		final parser:Parser = new Parser(lexer.scanTokens());
-		final analyzer:XingCodeAnalyzer = new XingCodeAnalyzer(parser.parse());
-		this = new XingIRVirtualMachine(analyzer.ir);
-		this.switchContext(context);
+		try {
+			final lexer:Lexer = new Lexer(template);
+			final tokens:Array<Token> = lexer.scanTokens();
+			final parser:Parser = new Parser(tokens);
+			final xingCode:Statement = parser.parse();
+			final analyzer:XingCodeAnalyzer = new XingCodeAnalyzer(xingCode);
+			this = new XingIRVirtualMachine(analyzer.ir);
+			this.switchContext(context);
+		} catch (e:Exception) {
+			throw e;
+		}
 	}
 
 	public function switchContext(context:Context) {

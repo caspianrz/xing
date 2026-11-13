@@ -166,20 +166,18 @@ class Lexer {
 							return newToken(TNEqual);
 						}
 						return newToken(TExclam);
+					// TODO: this is not even parsed?
 					case ":":
 						if (match("=")) {
 							return newToken(TColonEqual);
 						}
-						throw new LexerException(": must be followed with =", current, fileName);
+						throw new LexerException(": must be followed by =", current, fileName);
 					case "'":
 						return string("'");
 					case '"':
 						return string('"');
 					case "$":
-						if (match("$")) {
-							return newToken(TDDollar);
-						}
-						throw new LexerException("$ must be followed with $", current, fileName);
+						return newToken(TDollar);
 					case "\t", "\r", " ":
 						return null;
 					case "\n":

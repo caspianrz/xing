@@ -1,25 +1,25 @@
 package;
 
 import xing.Xing;
+import xing.route.Router;
 
 class Main {
     public static function main() {
         var x = new Xing();
-		x.registerRoute("/", function(req, res) {
+		var router = new Router();
+		router.add("/", (req, res) -> {
 			res.setBody("Hello World");
 			res.send();
 		});
-
-		x.registerRoute("/hello", (req: xing.request.Request, res) -> {
+		router.add("/hello/<name:string>", (req, res) -> {
 			var context : xing.template.Context = new xing.template.Context();
-			context.addString("name", "world");
+			context.addString("name", req.params.get("name"));
 			try {
 				var template = xing.template.Template.fromString("Hello {{
-					if(12 == 13) {
-						name = 'xing';
-						$ name $
-					} else {
+					if(name == 'world') {
 						$ 'cruel ' + name $
+					} else {
+						$ name $
 					}
 				}}.", context);
 				res.setBody(template);
@@ -34,6 +34,8 @@ class Main {
 				return;
 			}
 		});
+
+		x.registerRoute("/", router);
 
 		x.listen("0.0.0.0", [8000], function() {
 			Sys.println('Listening on http://0.0.0.0:8000');

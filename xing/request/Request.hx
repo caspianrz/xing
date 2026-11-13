@@ -9,6 +9,7 @@ class Request {
 	@:isVar
 	public var cookies(get, null):Map<String, String>;
 	public var headers(default, null):Map<String, String>;
+	public var params:Map<String, Dynamic>;
 
 	public function new(request:RequestType) {
 		this.method = request.method;
@@ -16,6 +17,7 @@ class Request {
 		this.headers = request.headers;
 		this.body = request.body;
 		this.cookies = this.get_cookies();
+		this.params = [];
 	}
 
 	function get_cookies():Map<String, String> {
